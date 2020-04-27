@@ -1,0 +1,7 @@
+.lib "BLITZSTEAMWORKS.dll"
+Steam_Init%():"Init"
+Steam_Update():"Update"
+Steam_Achieve%(ID$):"Achieve"
+Steam_UnAchieve%(ID$):"UnAchieve"
+Steam_GetOverlayState%():"GetOverlayState"
+Steam_GetOverlayUpdated%():"GetOverlayUpdated"

@@ -59,6 +59,36 @@ BS_API int GetOverlayUpdated() {
 	return overlayState;
 }
 
+PublishedFileId_t pubFileId;
+CreateItemResult_t result;
+UGCHandle_t hUpdate;
+
+BS_API int CreateItem() {
+	if (b != 0) {
+		SteamAPICall_t hSteamWorkshop = SteamUGC()->CreateItem(SteamUtils()->GetAppID(), k_EWorkshopFileTypeCommunity);
+		if (result.m_eResult == k_EResultOK) {
+			return 0;
+			pubFileId = result.m_nPublishedFileId;
+		}
+		else {
+			return -1;
+		}
+	}
+	return b == 1 ? b : 3;
+}
+
+BS_API void UploadItem(const char *path) {
+	if (b != 0) {
+		SteamAPICall_t hItemUpdate = SteamUGC()->StartItemUpdate(SteamUtils()->GetAppID(), pubFileId);
+		SteamUGC()->SetItemTitle(hUpdate, "Testing mod");
+		SteamUGC()->SetItemDescription(hUpdate, "Something interesting put here.");
+		SteamUGC()->SetItemContent(hUpdate, path);
+		SteamAPICall_t hItemSubmit = SteamUGC()->SubmitItemUpdate(hUpdate, "");
+	}
+}
+
+
+
 CallbackHandler::CallbackHandler():
 	linkerUserStatsReceived(this, &CallbackHandler::handleUserStatsReceived),
 	linkerGameOverlayActivated(this, &CallbackHandler::handleGameOverlayActivated)

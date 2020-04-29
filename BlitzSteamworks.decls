@@ -1,9 +1,13 @@
 .lib "BlitzSteamworks.dll"
+
 Steam_Init%():"Init"
 Steam_Update():"Update"
+
 Steam_Achieve%(ID$):"Achieve"
 Steam_UnAchieve%(ID$):"UnAchieve"
+
 Steam_GetOverlayState%():"GetOverlayState"
 Steam_GetOverlayUpdated%():"GetOverlayUpdated"
-Steam_WS_CreateItem%():"CreateItem"
-Steam_WS_UploadItem(contentpath$):"UploadItem"
+
+Steam_GetPlayerID%():"GetPlayerID"
+Steam_GetPlayerName$():"GetPlayerName"

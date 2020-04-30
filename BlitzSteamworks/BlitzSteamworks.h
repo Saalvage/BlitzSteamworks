@@ -55,23 +55,10 @@ BS_API int GetOverlayState();
 // 1 if it was just opened
 BS_API int GetOverlayUpdated();
 
-// Used for creating workshop items.
-// Returns
-// 0 if successful
-// -1 if failed
-BS_API int CreateItem();
-
-// Used for upload workshop items.
-// Returns
-// 0 if successful
-// -1 if failed
-BS_API void UploadItem(const char* path);
-
 class CallbackHandler {
 private:
 	STEAM_CALLBACK(CallbackHandler, handleUserStatsReceived, UserStatsReceived_t, linkerUserStatsReceived);
 	STEAM_CALLBACK(CallbackHandler, handleGameOverlayActivated, GameOverlayActivated_t, linkerGameOverlayActivated);
-
 public:
 	CallbackHandler();
 };

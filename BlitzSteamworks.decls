@@ -11,3 +11,6 @@ Steam_GetOverlayUpdated%():"GetOverlayUpdated"
 
 Steam_GetPlayerID%():"GetPlayerID"
 Steam_GetPlayerName$():"GetPlayerName"
+
+Steam_DownloadItems():"DownloadSubbedItems"
+Steam_CheckDownload():"IsStillDownloading"

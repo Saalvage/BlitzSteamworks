@@ -10,7 +10,7 @@
 #define BS_API __declspec(dllimport)
 #endif
 
-#include "steam_api.h"
+#include <steam_api.h>
 
 
 // Needs to be called and return 0 before being able to use the Steam API
@@ -58,13 +58,35 @@ BS_API int GetOverlayState();
 // 1 if it was just opened
 BS_API int GetOverlayUpdated();
 
-
 // Returns the unique 32-bit player ID as a signed int
 BS_API int GetPlayerID();
 
 // Returns the user's public username
 BS_API const char* GetPlayerName();
 
+// Downloads the workshop item
+// Returns
+// 1/true if successful
+// 0/false if failed
+BS_API bool DownloadSubbedItems();
+
+// Checks if the download is not finished
+// Returns
+// 0 if finished and doesn't require update
+// 1 if finish but needs update
+// 2 if not finished downloading
+BS_API int IsStillDownloading();
+
+class WorkshopRelated {
+private:
+	
+public:
+	CCallResult<WorkshopRelated, DownloadItemResult_t> dlResult;
+
+	bool CreateDownloadProcess();
+	
+	void ProcessDownload(DownloadItemResult_t* result, bool _bool);
+};
 
 class CallbackHandler {
 private:

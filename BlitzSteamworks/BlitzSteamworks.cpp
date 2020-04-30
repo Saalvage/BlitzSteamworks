@@ -71,6 +71,30 @@ BS_API const char* GetPlayerName() {
 	return SteamFriends()->GetPersonaName();
 }
 
+PublishedFileId_t PubFileId;
+
+BS_API bool DownloadSubbedItems() {
+	SteamUGC()->GetSubscribedItems(&PubFileId, SteamUGC()->GetNumSubscribedItems());
+
+	bool dlItemHandle = SteamUGC()->DownloadItem(PubFileId, true);
+
+	return dlItemHandle;
+}
+
+BS_API int IsStillDownloading() {
+	uint32 unItemState = SteamUGC()->GetItemState(2078908559);
+	if (unItemState & k_EItemStateDownloading)
+	{
+		return 2;
+	}
+	else if ((unItemState & k_EItemStateInstalled) && (unItemState & k_EItemStateNeedsUpdate))
+	{
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
 
 CallbackHandler::CallbackHandler() :
 	linkerUserStatsReceived(this, &CallbackHandler::handleUserStatsReceived),

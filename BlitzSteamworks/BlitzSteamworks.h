@@ -12,6 +12,7 @@
 
 #include "steam_api.h"
 
+
 // Needs to be called and return 0 before being able to use the Steam API
 // Returns
 // 0 if successful
@@ -22,6 +23,7 @@ BS_API int Init();
 // Updates callbacks
 // Should be called every tick
 BS_API void Update();
+
 
 // Used to unlock achievements
 // Param is the API Name of the achievement
@@ -43,6 +45,7 @@ BS_API int Achieve(const char* apiName);
 // <0 if RequestCurrentStats() has failed, the value is a code of EResult that has been negated
 BS_API int UnAchieve(const char* apiName);
 
+
 // Returns if the overlay is currently open
 // 0 if it is closed
 // 1 if it is open
@@ -55,10 +58,19 @@ BS_API int GetOverlayState();
 // 1 if it was just opened
 BS_API int GetOverlayUpdated();
 
+
+// Returns the unique 32-bit player ID as a signed int
+BS_API int GetPlayerID();
+
+// Returns the user's public username
+BS_API const char* GetPlayerName();
+
+
 class CallbackHandler {
 private:
 	STEAM_CALLBACK(CallbackHandler, handleUserStatsReceived, UserStatsReceived_t, linkerUserStatsReceived);
 	STEAM_CALLBACK(CallbackHandler, handleGameOverlayActivated, GameOverlayActivated_t, linkerGameOverlayActivated);
+
 public:
 	CallbackHandler();
 };

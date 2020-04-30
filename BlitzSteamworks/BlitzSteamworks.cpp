@@ -5,7 +5,6 @@ using namespace std;
 BS_API int Init() {
 	if (SteamAPI_Init()) {
 		if (SteamUserStats()->RequestCurrentStats()) {
-			new CallbackHandler();
 			return 0;
 		}
 		return 2;
@@ -71,11 +70,6 @@ BS_API const char* GetPlayerName() {
 	return SteamFriends()->GetPersonaName();
 }
 
-
-CallbackHandler::CallbackHandler():
-	linkerUserStatsReceived(this, &CallbackHandler::handleUserStatsReceived),
-	linkerGameOverlayActivated(this, &CallbackHandler::handleGameOverlayActivated)
-{}
 
 void CallbackHandler::handleUserStatsReceived(UserStatsReceived_t* callback) {
 	b = -static_cast<int>(callback->m_eResult);

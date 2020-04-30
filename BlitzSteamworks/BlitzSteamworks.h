@@ -10,6 +10,7 @@
 #define BS_API __declspec(dllimport)
 #endif
 
+#include "windows.h"
 #include "steam_api.h"
 
 
@@ -68,9 +69,6 @@ BS_API const char* GetPlayerName();
 
 class CallbackHandler {
 private:
-	STEAM_CALLBACK(CallbackHandler, handleUserStatsReceived, UserStatsReceived_t, linkerUserStatsReceived);
-	STEAM_CALLBACK(CallbackHandler, handleGameOverlayActivated, GameOverlayActivated_t, linkerGameOverlayActivated);
-
-public:
-	CallbackHandler();
+	STEAM_CALLBACK(CallbackHandler, handleUserStatsReceived, UserStatsReceived_t);
+	STEAM_CALLBACK(CallbackHandler, handleGameOverlayActivated, GameOverlayActivated_t);
 };

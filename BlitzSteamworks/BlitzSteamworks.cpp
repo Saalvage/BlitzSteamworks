@@ -1,7 +1,6 @@
 #include "BlitzSteamworks.h"
 using namespace std;
 
-
 BS_API int Init() {
 	if (SteamAPI_Init()) {
 		if (SteamUserStats()->RequestCurrentStats()) {
@@ -16,7 +15,6 @@ BS_API int Init() {
 BS_API void Update() {
 	SteamAPI_RunCallbacks();
 }
-
 
 int b = 1;
 
@@ -46,7 +44,6 @@ BS_API int UnAchieve(const char* apiName) {
 	return b == 1 ? b : 3;
 }
 
-
 int overlayState = 0;
 int overlayStatePrev = 0;
 
@@ -61,16 +58,6 @@ BS_API int GetOverlayUpdated() {
 	overlayStatePrev = overlayState;
 	return overlayState;
 }
-
-
-BS_API int GetPlayerID() {
-	return SteamUser()->GetSteamID().GetAccountID();
-}
-
-BS_API const char* GetPlayerName() {
-	return SteamFriends()->GetPersonaName();
-}
-
 
 CallbackHandler::CallbackHandler():
 	linkerUserStatsReceived(this, &CallbackHandler::handleUserStatsReceived),

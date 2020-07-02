@@ -25,6 +25,7 @@ BS_API int Init();
 // Should be called every tick
 BS_API void Update();
 
+BS_API void Shutdown();
 
 // Used to unlock achievements
 // Param is the API Name of the achievement

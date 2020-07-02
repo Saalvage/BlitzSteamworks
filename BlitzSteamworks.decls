@@ -2,6 +2,7 @@
 
 Steam_Init%():"Init"
 Steam_Update():"Update"
+Steam_Shutdown():"Shutdown"
 
 Steam_Achieve%(ID$):"Achieve"
 Steam_UnAchieve%(ID$):"UnAchieve"

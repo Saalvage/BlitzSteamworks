@@ -1,14 +1,17 @@
 #include "BlitzSteamworks.h"
 using namespace std;
 
+static CallbackHandler* callbackHandler = nullptr;
 
 BS_API int Init() {
 	if (SteamAPI_Init()) {
 		if (SteamUserStats()->RequestCurrentStats()) {
+			callbackHandler = new CallbackHandler();
 			return 0;
 		}
 		return 2;
 	}
+
 	return 1;
 }
 
@@ -16,6 +19,11 @@ BS_API void Update() {
 	SteamAPI_RunCallbacks();
 }
 
+BS_API void Shutdown() {
+	delete callbackHandler;
+
+	SteamAPI_Shutdown();
+}
 
 int b = 1;
 

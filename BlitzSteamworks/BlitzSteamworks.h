@@ -66,9 +66,16 @@ BS_API int GetPlayerID();
 // Returns the user's public username
 BS_API const char* GetPlayerName();
 
+BS_API const char* GetEpic();
+
+BS_API void DoEpic();
+
 
 class CallbackHandler {
 private:
 	STEAM_CALLBACK(CallbackHandler, handleUserStatsReceived, UserStatsReceived_t);
 	STEAM_CALLBACK(CallbackHandler, handleGameOverlayActivated, GameOverlayActivated_t);
+	STEAM_CALLBACK(CallbackHandler, handleP2PSessionRequest, P2PSessionRequest_t);
+	STEAM_CALLBACK(CallbackHandler, handleP2PSessionConnectFail, P2PSessionConnectFail_t);
 };
+

@@ -104,13 +104,15 @@ BS_API void PushFloat(float f) {
 }
 
 BS_API void PushString(const char* c) {
+	char ch;
 	do {
-		p2poutput.push_back(*c);
-	} while (*c++ != 0);
+		ch = *c++;
+		p2poutput.push_back(ch);
+	} while (ch);
 }
 
-void* p2pinputstart;
-uint8_t* p2pinput;
+void* p2pinputstart; // Maintained for freeing the memory block later
+uint8_t* p2pinput; // Current reading position pointer
 
 template <typename T>
 T Pull() {
@@ -137,7 +139,7 @@ BS_API float PullFloat() {
 
 BS_API const char* PullString() {
 	const char* c = (const char*) p2pinput;
-	do {} while (*p2pinput++ != 0);
+	while (*p2pinput++); // Move our pointer to the end of the string (after the null termination byte)
 	return c;
 }
 

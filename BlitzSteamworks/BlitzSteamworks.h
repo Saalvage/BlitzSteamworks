@@ -69,12 +69,14 @@ BS_API const char* GetPlayerID();
 // Returns the user's public username
 BS_API const char* GetPlayerName();
 
+// Pushes data onto the vector
 BS_API void PushByte(int b);
 BS_API void PushShort(int s);
 BS_API void PushInt(int i);
 BS_API void PushFloat(float f);
 BS_API void PushString(const char* c);
 
+// Pulls data from the loaded packet
 BS_API int PullByte();
 BS_API int PullShort();
 BS_API int PullInt();
@@ -84,6 +86,7 @@ BS_API const char* PullString();
 // Loads the next packet into memory, returns if a packet was successfully loaded
 BS_API bool LoadPacket();
 
+// Sends a packet to a specified Steam ID
 BS_API void SendPacketToUser(const char* cid);
 
 

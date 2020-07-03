@@ -11,7 +11,6 @@ BS_API int Init() {
 		}
 		return 2;
 	}
-
 	return 1;
 }
 
@@ -69,45 +68,106 @@ BS_API int GetOverlayUpdated() {
 	return overlayState;
 }
 
-
-BS_API int GetPlayerID() {
-	return SteamUser()->GetSteamID().GetAccountID();
+BS_API const char* GetPlayerID() {
+	return std::to_string(SteamUser()->GetSteamID().ConvertToUint64()).c_str();
 }
 
 BS_API const char* GetPlayerName() {
 	return SteamFriends()->GetPersonaName();
 }
 
-BS_API const char* GetEpic() {
+std::vector<uint8_t> p2poutput(0);
+
+template <typename T>
+void Push(T t) {
+	uint8_t* ptr = (uint8_t*) &t;
+	for (int i = 0; i < sizeof(T); i++) {
+		p2poutput.push_back(*ptr);
+		ptr++;
+	}
+}
+
+BS_API void PushByte(int i) {
+	Push((uint8_t) i);
+}
+
+BS_API void PushShort(int i) {
+	Push((short) i);
+}
+
+BS_API void PushInt(int i) {
+	Push(i);
+}
+
+BS_API void PushFloat(float f) {
+	Push(f);
+}
+
+BS_API void PushString(const char* c) {
+	do {
+		p2poutput.push_back(*c);
+	} while (*c++ != 0);
+}
+
+void* p2pinputstart;
+uint8_t* p2pinput;
+
+template <typename T>
+T Pull() {
+	T* t = reinterpret_cast<T*>(p2pinput);
+	p2pinput += sizeof(T);
+	return *t;
+}
+
+BS_API int PullByte() {
+	return Pull<uint8_t>();
+}
+
+BS_API int PullShort() {
+	return Pull<short>();
+}
+
+BS_API int PullInt() {
+	return Pull<int>();
+}
+
+BS_API float PullFloat() {
+	return Pull<float>();
+}
+
+BS_API const char* PullString() {
+	const char* c = (const char*) p2pinput;
+	do {} while (*p2pinput++ != 0);
+	return c;
+}
+
+BS_API bool LoadPacket() {
+	if (p2pinputstart != nullptr) {
+		free(p2pinputstart);
+	}
 	uint32 msgSize = 0;
-	while (SteamNetworking()->IsP2PPacketAvailable(&msgSize)) {
-		void* packet = malloc(msgSize);
+	if (SteamNetworking()->IsP2PPacketAvailable(&msgSize)) {
+		p2pinputstart = malloc(msgSize);
 		CSteamID steamIDRemote;
 		uint32 bytesRead = 0;
-		if (SteamNetworking()->ReadP2PPacket(packet, msgSize, &bytesRead, &steamIDRemote)) {
-			// message dispatch code goes here
+		if (SteamNetworking()->ReadP2PPacket(p2pinputstart, msgSize, &bytesRead, &steamIDRemote)) {
+			p2pinput = (uint8_t*) p2pinputstart;
+			return true;
 		}
-		free(packet);
-		abort();
 	}
-	return "";
+	return false;
 }
 
-BS_API void DoEpic() {
-	uint64 cid = 76561198087228694;
-	const char* s = "LOL";
-	if (!SteamNetworking()->SendP2PPacket(cid, s, sizeof(s), k_EP2PSendReliable)) {
+BS_API void SendPacketToUser(const char* cid) {
+	if (!SteamNetworking()->SendP2PPacket((uint64) atoll(cid), p2poutput.data(), p2poutput.size(), k_EP2PSendUnreliable)) {
 		abort();
 	}
+	p2poutput.clear();
 }
 
-int c = -1;
-
-#include <string>
-BS_API const char* EE() {
+BS_API const char* EE(const char* cid) {
 	P2PSessionState_t p2pSessionState;
-	uint64 cid = 76561198087228694;
-	if (SteamNetworking()->GetP2PSessionState(cid, &p2pSessionState)) {
+	/*if (SteamNetworking()->GetP2PSessionState((uint64) std::atoll(cid), &p2pSessionState)) {
 		string s = (to_string(p2pSessionState.m_bConnecting));
 		s.append("  ");
 		s.append(to_string(p2pSessionState.m_bConnectionActive));
@@ -124,7 +184,7 @@ BS_API const char* EE() {
 		s.append("  ");
 		s.append(to_string(p2pSessionState.m_nRemotePort));
 		return s.c_str();
-	}
+	}*/
 	return "";
 }
 
@@ -138,12 +198,10 @@ void CallbackHandler::handleGameOverlayActivated(GameOverlayActivated_t* callbac
 
 void CallbackHandler::handleP2PSessionRequest(P2PSessionRequest_t* callback) {
 	// TODO accept everything for now!
-	// CRASH IF WE GET A FUCKING REQUEST
-	abort();
 	SteamNetworking()->AcceptP2PSessionWithUser(callback->m_steamIDRemote);
 }
 
+int c = -1;
 void CallbackHandler::handleP2PSessionConnectFail(P2PSessionConnectFail_t* callback) {
-	abort();
 	c = callback->m_eP2PSessionError;
 }

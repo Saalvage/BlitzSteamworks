@@ -12,6 +12,8 @@
 
 #include "windows.h"
 #include "steam_api.h"
+#include <vector>
+#include <string>
 
 
 // Needs to be called and return 0 before being able to use the Steam API
@@ -61,15 +63,28 @@ BS_API int GetOverlayState();
 BS_API int GetOverlayUpdated();
 
 
-// Returns the unique 32-bit player ID as a signed int
-BS_API int GetPlayerID();
+// Returns the unique unsigned 64-bit player ID as a string
+BS_API const char* GetPlayerID();
 
 // Returns the user's public username
 BS_API const char* GetPlayerName();
 
-BS_API const char* GetEpic();
+BS_API void PushByte(int b);
+BS_API void PushShort(int s);
+BS_API void PushInt(int i);
+BS_API void PushFloat(float f);
+BS_API void PushString(const char* c);
 
-BS_API void DoEpic();
+BS_API int PullByte();
+BS_API int PullShort();
+BS_API int PullInt();
+BS_API float PullFloat();
+BS_API const char* PullString();
+
+// Loads the next packet into memory, returns if a packet was successfully loaded
+BS_API bool LoadPacket();
+
+BS_API void SendPacketToUser(const char* cid);
 
 
 class CallbackHandler {

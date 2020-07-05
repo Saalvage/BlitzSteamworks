@@ -26,6 +26,7 @@ Steam_PullFloat#():"PullFloat"
 Steam_PullString$():"PullString"
 
 Steam_LoadPacket%():"LoadPacket"
-Steam_SendPacketToUser():"SendPacketToUser"
+Steam_SendPacketToUser%(sid$):"SendPacketToUser"
+Steam_CloseConnection%(sid$):"CloseConnection"
 
 EE$():"EE"

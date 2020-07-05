@@ -69,6 +69,7 @@ BS_API const char* GetPlayerID();
 // Returns the user's public username
 BS_API const char* GetPlayerName();
 
+
 // Pushes data onto the vector
 BS_API void PushByte(int b);
 BS_API void PushShort(int s);
@@ -83,11 +84,18 @@ BS_API int PullInt();
 BS_API float PullFloat();
 BS_API const char* PullString();
 
-// Loads the next packet into memory, returns if a packet was successfully loaded
-BS_API bool LoadPacket();
+// Loads the next packet into memory
+// Returns
+// -1 if the packet failed to be loaded
+// 0 if there was no packet available
+// 1 if a packet was loaded successfully
+BS_API int LoadPacket();
 
-// Sends a packet to a specified Steam ID
-BS_API void SendPacketToUser(const char* cid);
+// Sends a packet to a specified Steam ID, returns if a packet has begun to send successfully
+BS_API int SendPacketToUser(const char* cid);
+
+// Returns true if the connection was successfully closed and false if there existed no connection
+BS_API int CloseConnection(const char* cid);
 
 
 class CallbackHandler {

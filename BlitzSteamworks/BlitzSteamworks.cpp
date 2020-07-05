@@ -143,7 +143,7 @@ BS_API const char* PullString() {
 	return c;
 }
 
-BS_API bool LoadPacket() {
+BS_API int LoadPacket() {
 	if (p2pinputstart != nullptr) {
 		free(p2pinputstart);
 	}
@@ -152,19 +152,25 @@ BS_API bool LoadPacket() {
 		p2pinputstart = malloc(msgSize);
 		CSteamID steamIDRemote;
 		uint32 bytesRead = 0;
-		if (SteamNetworking()->ReadP2PPacket(p2pinputstart, msgSize, &bytesRead, &steamIDRemote)) {
+		if (SteamNetworking()->ReadP2PPacket(p2pinputstart, msgSize, &bytesRead, &steamIDRemote)) { // CRASH HERE
 			p2pinput = (uint8_t*) p2pinputstart;
-			return true;
+			return 1;
+		} else {
+			return -1;
 		}
+	} else {
+		return 0;
 	}
-	return false;
 }
 
-BS_API void SendPacketToUser(const char* cid) {
-	if (!SteamNetworking()->SendP2PPacket((uint64) atoll(cid), p2poutput.data(), p2poutput.size(), k_EP2PSendUnreliable)) {
-		abort();
-	}
+BS_API int SendPacketToUser(const char* cid) {
+	bool b = SteamNetworking()->SendP2PPacket((uint64) atoll(cid), p2poutput.data(), p2poutput.size(), k_EP2PSendUnreliable);
 	p2poutput.clear();
+	return b;
+}
+
+BS_API int CloseConnection(const char* cid) {
+	return SteamNetworking()->CloseP2PSessionWithUser((uint64)atoll(cid));
 }
 
 BS_API const char* EE(const char* cid) {

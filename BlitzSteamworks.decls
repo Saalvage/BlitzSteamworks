@@ -10,7 +10,8 @@ Steam_UnAchieve%(ID$):"UnAchieve"
 Steam_GetOverlayState%():"GetOverlayState"
 Steam_GetOverlayUpdated%():"GetOverlayUpdated"
 
-Steam_GetPlayerID$():"GetPlayerID"
+Steam_GetPlayerIDUpper%():"GetPlayerIDUpper"
+Steam_GetPlayerIDLower%():"GetPlayerIDLower"
 Steam_GetPlayerName$():"GetPlayerName"
 
 Steam_PushByte(b%):"PushByte"
@@ -25,8 +26,9 @@ Steam_PullInt%():"PullInt"
 Steam_PullFloat#():"PullFloat"
 Steam_PullString$():"PullString"
 
-Steam_LoadPacket%():"LoadPacket"
-Steam_SendPacketToUser%(sid$):"SendPacketToUser"
-Steam_CloseConnection%(sid$):"CloseConnection"
+Steam_GetSenderIDUpper%():"GetSenderIDUpper"
+Steam_GetSenderIDLower%():"GetSenderIDLower"
 
-EE$():"EE"
+Steam_LoadPacket%():"LoadPacket"
+Steam_SendPacketToUser%(upperID%, lowerID%):"SendPacketToUser"
+Steam_CloseConnection%(upperID%, lowerID%):"CloseConnection"

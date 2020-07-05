@@ -63,8 +63,9 @@ BS_API int GetOverlayState();
 BS_API int GetOverlayUpdated();
 
 
-// Returns the unique unsigned 64-bit player ID as a string
-BS_API const char* GetPlayerID();
+// Returns the unique unsigned 64-bit player ID as a two ints
+BS_API int GetPlayerIDUpper();
+BS_API int GetPlayerIDLower();
 
 // Returns the user's public username
 BS_API const char* GetPlayerName();
@@ -84,6 +85,9 @@ BS_API int PullInt();
 BS_API float PullFloat();
 BS_API const char* PullString();
 
+BS_API int GetSenderIDUpper();
+BS_API int GetSenderIDLower();
+
 // Loads the next packet into memory
 // Returns
 // -1 if the packet failed to be loaded
@@ -92,10 +96,10 @@ BS_API const char* PullString();
 BS_API int LoadPacket();
 
 // Sends a packet to a specified Steam ID, returns if a packet has begun to send successfully
-BS_API int SendPacketToUser(const char* cid);
+BS_API int SendPacketToUser(int upperID, int lowerID);
 
 // Returns true if the connection was successfully closed and false if there existed no connection
-BS_API int CloseConnection(const char* cid);
+BS_API int CloseConnection(int upperID, int lowerID);
 
 
 class CallbackHandler {

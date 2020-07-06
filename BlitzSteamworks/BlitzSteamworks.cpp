@@ -68,6 +68,7 @@ BS_API int GetOverlayUpdated() {
 	return overlayState;
 }
 
+
 int idUpper(uint64 cid) {
 	return cid >> 32;
 }
@@ -78,6 +79,14 @@ int idLower(uint64 cid) {
 
 uint64 idMerge(int upper, int lower) {
 	return ((uint64) upper << 32) | lower;
+}
+
+BS_API int StringToIDUpper(const char* cid) {
+	return idUpper(atoll(cid));
+}
+
+BS_API int StringToIDLower(const char* cid) {
+	return idLower(atoll(cid));
 }
 
 BS_API int GetPlayerIDUpper() {

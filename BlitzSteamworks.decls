@@ -10,6 +10,9 @@ Steam_UnAchieve%(ID$):"UnAchieve"
 Steam_GetOverlayState%():"GetOverlayState"
 Steam_GetOverlayUpdated%():"GetOverlayUpdated"
 
+Steam_StringToIDUpper%(cid$):"StringToIDUpper"
+Steam_StringToIDLower%(cid$):"StringToIDLower"
+
 Steam_GetPlayerIDUpper%():"GetPlayerIDUpper"
 Steam_GetPlayerIDLower%():"GetPlayerIDLower"
 Steam_GetPlayerName$():"GetPlayerName"

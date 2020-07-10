@@ -66,7 +66,7 @@ BS_API(int) GetOverlayUpdated();
 BS_API(int) StringToIDUpper(const char* cid);
 BS_API(int) StringToIDLower(const char* cid);
 
-BS_API(const char*) IDToString(unsigned int upperID, unsigned int lowerID);
+BS_API(const char*) IDToString(int upperID, int lowerID);
 
 // Returns the unique unsigned 64-bit player ID as a two ints
 BS_API(int) GetPlayerIDUpper();

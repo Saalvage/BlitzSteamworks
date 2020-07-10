@@ -38,4 +38,4 @@ Steam_LoadPacket%():"_LoadPacket@0"
 Steam_SendPacketToUser%(upperID%, lowerID%):"_SendPacketToUser@8"
 Steam_CloseConnection%(upperID%, lowerID%):"_CloseConnection@8"
 
-Steam_EE$(cid$):"EE"
+Steam_EE$(cid$):"_EE@4"

@@ -77,30 +77,20 @@ int idLower(uint64 cid) {
 	return cid & 0xffffffff;
 }
 
-uint64 idMerge(unsigned int upper, unsigned int lower) {
-	uint64 u = 0;
-	u |= (uint64)upper;
-	u <<= 32;
-	u |= (uint64)lower;
-	return u;
+uint64 idMerge(int upper, int lower) {
+	return ((uint64) upper << 32) | lower;
 }
 
 BS_API(int) StringToIDUpper(const char* cid) {
-	printf("%s\n", cid);
 	return idUpper(atoll(cid));
 }
 
 BS_API(int) StringToIDLower(const char* cid) {
-	printf("%s\n", cid);
 	return idLower(atoll(cid));
 }
 
-static char tmpText[256];
-
-BS_API(const char*) IDToString(unsigned int upperID, unsigned int lowerID) {
-	string result = to_string(idMerge(upperID, lowerID));
-	strcpy(tmpText, result.c_str());
-	return tmpText;
+BS_API(const char*) IDToString(int upperID, int lowerID) {
+	return to_string(idMerge(upperID, lowerID)).c_str();
 }
 
 BS_API(int) GetPlayerIDUpper() {
@@ -114,6 +104,7 @@ BS_API(int) GetPlayerIDLower() {
 BS_API(const char*) GetPlayerName() {
 	return SteamFriends()->GetPersonaName();
 }
+
 
 std::vector<uint8_t> p2poutput(0);
 
@@ -245,8 +236,7 @@ BS_API(const char*) EE(const char* cid) {
 		s.append(to_string(p2pSessionState.m_nRemoteIP));
 		s.append("  ");
 		s.append(to_string(p2pSessionState.m_nRemotePort));
-		strcpy(tmpText, s.c_str());
-		return tmpText;
+		return s.c_str();
 	}
 	return "";
 }
@@ -260,7 +250,6 @@ void CallbackHandler::handleGameOverlayActivated(GameOverlayActivated_t* callbac
 }
 
 void CallbackHandler::handleP2PSessionRequest(P2PSessionRequest_t* callback) {
-	abort();
 	// TODO accept everything for now!
 	SteamNetworking()->AcceptP2PSessionWithUser(callback->m_steamIDRemote);
 }

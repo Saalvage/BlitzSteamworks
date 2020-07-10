@@ -3,7 +3,7 @@ using namespace std;
 
 static CallbackHandler* callbackHandler = nullptr;
 
-BS_API int Init() {
+BS_API(int) Init() {
 	if (SteamAPI_Init()) {
 		if (SteamUserStats()->RequestCurrentStats()) {
 			callbackHandler = new CallbackHandler();
@@ -14,11 +14,11 @@ BS_API int Init() {
 	return 1;
 }
 
-BS_API void Update() {
+BS_API(void) Update() {
 	SteamAPI_RunCallbacks();
 }
 
-BS_API void Shutdown() {
+BS_API(void) Shutdown() {
 	delete callbackHandler;
 
 	SteamAPI_Shutdown();
@@ -26,7 +26,7 @@ BS_API void Shutdown() {
 
 int b = 1;
 
-BS_API int Achieve(const char* apiName) {
+BS_API(int) Achieve(const char* apiName) {
 	if (b != 0) {
 		if (SteamUserStats()->SetAchievement(apiName)) {
 			if (SteamUserStats()->StoreStats()) {
@@ -39,7 +39,7 @@ BS_API int Achieve(const char* apiName) {
 	return b == 1 ? b : 3;
 }
 
-BS_API int UnAchieve(const char* apiName) {
+BS_API(int) UnAchieve(const char* apiName) {
 	if (b != 0) {
 		if (SteamUserStats()->ClearAchievement(apiName)) {
 			if (SteamUserStats()->StoreStats()) {
@@ -56,11 +56,11 @@ BS_API int UnAchieve(const char* apiName) {
 int overlayState = 0;
 int overlayStatePrev = 0;
 
-BS_API int GetOverlayState() {
+BS_API(int) GetOverlayState() {
 	return overlayState;
 }
 
-BS_API int GetOverlayUpdated() {
+BS_API(int) GetOverlayUpdated() {
 	if (overlayStatePrev == overlayState) {
 		return -1;
 	}
@@ -79,33 +79,39 @@ int idLower(uint64 cid) {
 
 uint64 idMerge(unsigned int upper, unsigned int lower) {
 	uint64 u = 0;
-	u |= upper;
+	u |= (uint64)upper;
 	u <<= 32;
-	u |= lower;
+	u |= (uint64)lower;
 	return u;
 }
 
-BS_API int StringToIDUpper(const char* cid) {
+BS_API(int) StringToIDUpper(const char* cid) {
+	printf("%s\n", cid);
 	return idUpper(atoll(cid));
 }
 
-BS_API int StringToIDLower(const char* cid) {
+BS_API(int) StringToIDLower(const char* cid) {
+	printf("%s\n", cid);
 	return idLower(atoll(cid));
 }
 
-BS_API const char* IDToString(unsigned int upperID, unsigned int lowerID) {
-	return to_string(idMerge(upperID, lowerID)).c_str();
+static char tmpText[256];
+
+BS_API(const char*) IDToString(unsigned int upperID, unsigned int lowerID) {
+	string result = to_string(idMerge(upperID, lowerID));
+	strcpy(tmpText, result.c_str());
+	return tmpText;
 }
 
-BS_API int GetPlayerIDUpper() {
+BS_API(int) GetPlayerIDUpper() {
 	return idUpper(SteamUser()->GetSteamID().ConvertToUint64());
 }
 
-BS_API int GetPlayerIDLower() {
+BS_API(int) GetPlayerIDLower() {
 	return idLower(SteamUser()->GetSteamID().ConvertToUint64());
 }
 
-BS_API const char* GetPlayerName() {
+BS_API(const char*) GetPlayerName() {
 	return SteamFriends()->GetPersonaName();
 }
 
@@ -120,23 +126,23 @@ void Push(T t) {
 	}
 }
 
-BS_API void PushByte(int i) {
+BS_API(void) PushByte(int i) {
 	Push((uint8_t) i);
 }
 
-BS_API void PushShort(int i) {
+BS_API(void) PushShort(int i) {
 	Push((short) i);
 }
 
-BS_API void PushInt(int i) {
+BS_API(void) PushInt(int i) {
 	Push(i);
 }
 
-BS_API void PushFloat(float f) {
+BS_API(void) PushFloat(float f) {
 	Push(f);
 }
 
-BS_API void PushString(const char* c) {
+BS_API(void) PushString(const char* c) {
 	char ch;
 	do {
 		ch = *c++;
@@ -157,37 +163,37 @@ T Pull() {
 	return *t;
 }
 
-BS_API int PullByte() {
+BS_API(int) PullByte() {
 	return Pull<uint8_t>();
 }
 
-BS_API int PullShort() {
+BS_API(int) PullShort() {
 	return Pull<short>();
 }
 
-BS_API int PullInt() {
+BS_API(int) PullInt() {
 	return Pull<int>();
 }
 
-BS_API float PullFloat() {
+BS_API(float) PullFloat() {
 	return Pull<float>();
 }
 
-BS_API const char* PullString() {
+BS_API(const char*) PullString() {
 	const char* c = (const char*) p2pinput;
 	while (*p2pinput++); // Move our pointer to the end of the string (after the null termination byte)
 	return c;
 }
 
-BS_API int GetSenderIDUpper() {
+BS_API(int) GetSenderIDUpper() {
 	return senderIDUpper;
 }
 
-BS_API int GetSenderIDLower() {
+BS_API(int) GetSenderIDLower() {
 	return senderIDLower;
 }
 
-BS_API int LoadPacket() {
+BS_API(int) LoadPacket() {
 	uint32 msgSize = 0;
 	if (SteamNetworking()->IsP2PPacketAvailable(&msgSize)) {
 		if (p2pinputstart != nullptr) {
@@ -211,17 +217,17 @@ BS_API int LoadPacket() {
 	}
 }
 
-BS_API int SendPacketToUser(int upperID, int lowerID) {
+BS_API(int) SendPacketToUser(int upperID, int lowerID) {
 	bool b = SteamNetworking()->SendP2PPacket(idMerge(upperID, lowerID), p2poutput.data(), p2poutput.size(), k_EP2PSendUnreliable);
 	p2poutput.clear();
 	return b;
 }
 
-BS_API int CloseConnection(int upperID, int lowerID) {
+BS_API(int) CloseConnection(int upperID, int lowerID) {
 	return SteamNetworking()->CloseP2PSessionWithUser(idMerge(upperID, lowerID));
 }
 
-BS_API const char* EE(const char* cid) {
+BS_API(const char*) EE(const char* cid) {
 	P2PSessionState_t p2pSessionState;
 	if (SteamNetworking()->GetP2PSessionState((uint64) std::atoll(cid), &p2pSessionState)) {
 		string s = (to_string(p2pSessionState.m_bConnecting));
@@ -239,7 +245,8 @@ BS_API const char* EE(const char* cid) {
 		s.append(to_string(p2pSessionState.m_nRemoteIP));
 		s.append("  ");
 		s.append(to_string(p2pSessionState.m_nRemotePort));
-		return s.c_str();
+		strcpy(tmpText, s.c_str());
+		return tmpText;
 	}
 	return "";
 }

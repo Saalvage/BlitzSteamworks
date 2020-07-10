@@ -77,8 +77,12 @@ int idLower(uint64 cid) {
 	return cid & 0xffffffff;
 }
 
-uint64 idMerge(int upper, int lower) {
-	return ((uint64) upper << 32) | lower;
+uint64 idMerge(unsigned int upper, unsigned int lower) {
+	uint64 u = 0;
+	u |= upper;
+	u <<= 32;
+	u |= lower;
+	return u;
 }
 
 BS_API int StringToIDUpper(const char* cid) {
@@ -87,6 +91,10 @@ BS_API int StringToIDUpper(const char* cid) {
 
 BS_API int StringToIDLower(const char* cid) {
 	return idLower(atoll(cid));
+}
+
+BS_API const char* IDToString(unsigned int upperID, unsigned int lowerID) {
+	return to_string(idMerge(upperID, lowerID)).c_str();
 }
 
 BS_API int GetPlayerIDUpper() {
@@ -213,6 +221,29 @@ BS_API int CloseConnection(int upperID, int lowerID) {
 	return SteamNetworking()->CloseP2PSessionWithUser(idMerge(upperID, lowerID));
 }
 
+BS_API const char* EE(const char* cid) {
+	P2PSessionState_t p2pSessionState;
+	if (SteamNetworking()->GetP2PSessionState((uint64) std::atoll(cid), &p2pSessionState)) {
+		string s = (to_string(p2pSessionState.m_bConnecting));
+		s.append("  ");
+		s.append(to_string(p2pSessionState.m_bConnectionActive));
+		s.append("  ");
+		s.append(to_string(p2pSessionState.m_bUsingRelay));
+		s.append("  ");
+		s.append(to_string(p2pSessionState.m_eP2PSessionError));
+		s.append("  ");
+		s.append(to_string(p2pSessionState.m_nBytesQueuedForSend));
+		s.append("  ");
+		s.append(to_string(p2pSessionState.m_nPacketsQueuedForSend));
+		s.append("  ");
+		s.append(to_string(p2pSessionState.m_nRemoteIP));
+		s.append("  ");
+		s.append(to_string(p2pSessionState.m_nRemotePort));
+		return s.c_str();
+	}
+	return "";
+}
+
 void CallbackHandler::handleUserStatsReceived(UserStatsReceived_t* callback) {
 	b = -static_cast<int>(callback->m_eResult);
 }
@@ -222,6 +253,7 @@ void CallbackHandler::handleGameOverlayActivated(GameOverlayActivated_t* callbac
 }
 
 void CallbackHandler::handleP2PSessionRequest(P2PSessionRequest_t* callback) {
+	abort();
 	// TODO accept everything for now!
 	SteamNetworking()->AcceptP2PSessionWithUser(callback->m_steamIDRemote);
 }

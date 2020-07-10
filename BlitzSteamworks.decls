@@ -13,6 +13,8 @@ Steam_GetOverlayUpdated%():"GetOverlayUpdated"
 Steam_StringToIDUpper%(cid$):"StringToIDUpper"
 Steam_StringToIDLower%(cid$):"StringToIDLower"
 
+Steam_IDToString$(upperID%, lowerID%):"IDToString"
+
 Steam_GetPlayerIDUpper%():"GetPlayerIDUpper"
 Steam_GetPlayerIDLower%():"GetPlayerIDLower"
 Steam_GetPlayerName$():"GetPlayerName"
@@ -35,3 +37,5 @@ Steam_GetSenderIDLower%():"GetSenderIDLower"
 Steam_LoadPacket%():"LoadPacket"
 Steam_SendPacketToUser%(upperID%, lowerID%):"SendPacketToUser"
 Steam_CloseConnection%(upperID%, lowerID%):"CloseConnection"
+
+Steam_EE$(cid$):"EE"

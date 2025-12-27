@@ -20,7 +20,6 @@
 // Returns
 // 0 if successful
 // 1 if SteamAPI_Init() failed
-// 2 if RequestCurrentStats() failed
 BS_API(int) Init();
 
 // Updates callbacks

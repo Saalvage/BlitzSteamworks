@@ -5,11 +5,8 @@ static CallbackHandler* callbackHandler = nullptr;
 
 BS_API(int) Init() {
 	if (SteamAPI_Init()) {
-		if (SteamUserStats()->RequestCurrentStats()) {
-			callbackHandler = new CallbackHandler();
-			return 0;
-		}
-		return 2;
+		callbackHandler = new CallbackHandler();
+		return 0;
 	}
 	return 1;
 }

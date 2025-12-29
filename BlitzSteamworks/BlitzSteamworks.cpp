@@ -1,11 +1,11 @@
 #include "BlitzSteamworks.h"
 using namespace std;
 
-static CallbackHandler* callbackHandler = nullptr;
+CallbackHandler* CallbackHandler::instance = nullptr;
 
 BS_API(int) Init() {
 	if (SteamAPI_Init()) {
-		callbackHandler = new CallbackHandler();
+		CallbackHandler::instance = new CallbackHandler();
 		return 0;
 	}
 	return 1;
@@ -16,7 +16,7 @@ BS_API(void) Update() {
 }
 
 BS_API(void) Shutdown() {
-	delete callbackHandler;
+	delete CallbackHandler::instance;
 
 	SteamAPI_Shutdown();
 }

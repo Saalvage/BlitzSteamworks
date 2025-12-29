@@ -62,6 +62,17 @@ BS_API(int) GetOverlayState();
 BS_API(int) GetOverlayUpdated();
 
 
+BS_API(void) PublishItem(const char* title, const char* desc, const char* itemPath, const char* imgPath);
+BS_API(void) UpdateItem(const char* publishedFileID, const char* newTitle, const char* newDesc, const char* itemPath, const char* imgPath, const char* changeLogText);
+// 0 idle
+// 1 creating item
+// 1000-1999 failed to create
+// 2 submitting item update
+// 2000-2999 failed to submit update
+// 3 completed successfully
+BS_API(int) QueryUpdateItemStatus();
+BS_API(const char*) GetPublishedItemID();
+
 BS_API(int) StringToIDUpper(const char* cid);
 BS_API(int) StringToIDLower(const char* cid);
 
@@ -112,5 +123,14 @@ private:
 	STEAM_CALLBACK(CallbackHandler, handleGameOverlayActivated, GameOverlayActivated_t);
 	STEAM_CALLBACK(CallbackHandler, handleP2PSessionRequest, P2PSessionRequest_t);
 	STEAM_CALLBACK(CallbackHandler, handleP2PSessionConnectFail, P2PSessionConnectFail_t);
+
+public:
+	static CallbackHandler* instance;
+
+	void handleItemCreated(CreateItemResult_t* callback, bool bIOFailure);
+	CCallResult<CallbackHandler, CreateItemResult_t> createItemCallback;
+
+	void handleItemUpdateSubmitted(SubmitItemUpdateResult_t* callback, bool bIOFailure);
+	CCallResult<CallbackHandler, SubmitItemUpdateResult_t> updateItemCallback;
 };
 

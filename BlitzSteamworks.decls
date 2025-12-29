@@ -10,6 +10,11 @@ Steam_UnAchieve%(ID$):"_UnAchieve@4"
 Steam_GetOverlayState%():"_GetOverlayState@0"
 Steam_GetOverlayUpdated%():"_GetOverlayUpdated@0"
 
+Steam_PublishItem(name$, desc$, path$, imgPath$):"_PublishItem@16"
+Steam_UpdateItem(fileid$, name$, desc$, path$, imgPath$, changelog$):"_UpdateItem@24"
+Steam_QueryUpdateItemStatus%():"_QueryUpdateItemStatus@0"
+Steam_GetPublishedItemID$():"_GetPublishedItemID@0"
+
 Steam_StringToIDUpper%(cid$):"_StringToIDUpper@4"
 Steam_StringToIDLower%(cid$):"_StringToIDLower@4"
 

@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlitzSteamworks.cpp" />
+    <ClCompile Include="BlitzSteamworks.Workshop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlitzSteamworks.h" />

@@ -73,6 +73,11 @@ BS_API(void) UpdateItem(const char* publishedFileID, const char* newTitle, const
 BS_API(int) QueryUpdateItemStatus();
 BS_API(const char*) GetPublishedItemID();
 
+BS_API(void) LoadSubscribedItems();
+BS_API(int) GetSubscribedItemCount();
+BS_API(const char*) GetSubscribedItemID(int index);
+BS_API(const char*) GetSubscribedItemPath(int index);
+
 BS_API(int) StringToIDUpper(const char* cid);
 BS_API(int) StringToIDLower(const char* cid);
 

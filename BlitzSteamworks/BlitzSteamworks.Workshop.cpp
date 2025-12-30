@@ -79,3 +79,30 @@ void CallbackHandler::handleItemUpdateSubmitted(SubmitItemUpdateResult_t* callba
 	}
 }
 
+
+static vector<PublishedFileId_t> subscribedItems;
+BS_API(void) LoadSubscribedItems() {
+	auto count = SteamUGC()->GetNumSubscribedItems();
+	subscribedItems.resize(count);
+	SteamUGC()->GetSubscribedItems(subscribedItems.data(), count);
+}
+
+BS_API(int) GetSubscribedItemCount() {
+	return subscribedItems.size();
+}
+
+static string id;
+BS_API(const char*) GetSubscribedItemID(int index) {
+	id = to_string(subscribedItems[index]);
+	return id.c_str();
+}
+
+static constexpr int PATH_BUF_SIZE = 300;
+static char pathBuf[PATH_BUF_SIZE];
+BS_API(const char*) GetSubscribedItemPath(int index) {
+	if (SteamUGC()->GetItemInstallInfo(subscribedItems[index], nullptr, pathBuf, PATH_BUF_SIZE, nullptr)) {
+		return pathBuf;
+	} else {
+		return "";
+	}
+}

@@ -17,7 +17,9 @@ static void UpdateItemInternal() {
 	currentUpdateStatus = 2;
 	auto updateHandle = SteamUGC()->StartItemUpdate(SteamUtils()->GetAppID(), publishedFileId);
 	SteamUGC()->SetItemTitle(updateHandle, currentUpdateTitle.c_str());
-	SteamUGC()->SetItemDescription(updateHandle, currentUpdateDesc.c_str());
+	if (!currentUpdateDesc.empty()) {
+		SteamUGC()->SetItemDescription(updateHandle, currentUpdateDesc.c_str());
+	}
 	SteamUGC()->SetItemContent(updateHandle, currentUpdatePath.c_str());
 	if (!currentUpdateImgPath.empty()) {
 		SteamUGC()->SetItemPreview(updateHandle, currentUpdateImgPath.c_str());

@@ -22,6 +22,8 @@
 // 1 if SteamAPI_Init() failed
 BS_API(int) Init();
 
+BS_API(int) RestartAppIfNecessary(int appId);
+
 // Updates callbacks
 // Should be called every tick
 BS_API(void) Update();

@@ -11,6 +11,10 @@ BS_API(int) Init() {
 	return 1;
 }
 
+BS_API(int) RestartAppIfNecessary(int appId) {
+	return SteamAPI_RestartAppIfNecessary(appId);
+}
+
 BS_API(void) Update() {
 	SteamAPI_RunCallbacks();
 }

@@ -130,6 +130,7 @@ BS_API(int) CloseConnection(int upperID, int lowerID);
 
 // 0 for single line, 1 for multi line, 2 for emails, 3 for numeric
 BS_API(void) OpenOnScreenKeyboard(int mode, int x, int y, int width, int height);
+BS_API(void) CloseOnScreenKeyboard();
 
 class CallbackHandler {
 private:

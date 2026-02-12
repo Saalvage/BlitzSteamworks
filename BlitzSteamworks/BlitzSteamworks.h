@@ -64,8 +64,12 @@ BS_API(int) GetOverlayState();
 BS_API(int) GetOverlayUpdated();
 
 
+BS_API(void) ClearItemTags();
+BS_API(void) AddItemTag(const char* tag);
+BS_API(void) RemoveItemTag(const char* tag);
+
 BS_API(void) PublishItem(const char* title, const char* desc, const char* itemPath, const char* imgPath);
-BS_API(void) UpdateItem(const char* publishedFileID, const char* newTitle, const char* newDesc, const char* itemPath, const char* imgPath, const char* changeLogText);
+BS_API(void) UpdateItem(const char* publishedFileID, const char* newTitle, const char* newDesc, const char* itemPath, const char* imgPath, const char* changeLogText, bool shouldUpdateTags);
 // 0 idle
 // 1 creating item
 // 1000-1999 failed to create

@@ -13,10 +13,33 @@ static string changelog;
 static bool isCreating; // as opposed to updating
 static PublishedFileId_t publishedFileId;
 
-static void UpdateItemInternal() {
+static vector<string> itemTags;
+
+BS_API(void) ClearItemTags() {
+	itemTags.clear();
+}
+
+BS_API(void) AddItemTag(const char* tag) {
+	itemTags.emplace_back(tag);
+}
+
+BS_API(void) RemoveItemTag(const char* tag) {
+	itemTags.erase(remove(itemTags.begin(), itemTags.end(), tag), itemTags.end());
+}
+
+static void UpdateItemInternal(bool shouldUpdateTags = true) {
 	currentUpdateStatus = 2;
 	auto updateHandle = SteamUGC()->StartItemUpdate(SteamUtils()->GetAppID(), publishedFileId);
 	SteamUGC()->SetItemTitle(updateHandle, currentUpdateTitle.c_str());
+	if (shouldUpdateTags) {
+		std::vector<const char*> tagPtrs(itemTags.size());
+		for (size_t i = 0; i < itemTags.size(); i++) {
+			tagPtrs[i] = itemTags[i].c_str();
+		}
+		SteamParamStringArray_t tags{ tagPtrs.data(), static_cast<int>(tagPtrs.size()) };
+		SteamUGC()->SetItemTags(updateHandle, &tags);
+	}
+
 	if (!currentUpdateDesc.empty()) {
 		SteamUGC()->SetItemDescription(updateHandle, currentUpdateDesc.c_str());
 	}
@@ -38,7 +61,7 @@ BS_API(void) PublishItem(const char* title, const char* desc, const char* itemPa
 	CallbackHandler::instance->createItemCallback.Set(SteamUGC()->CreateItem(SteamUtils()->GetAppID(), k_EWorkshopFileTypeCommunity), CallbackHandler::instance, &CallbackHandler::handleItemCreated);
 }
 
-BS_API(void) UpdateItem(const char* publishedFileID, const char* newTitle, const char* newDesc, const char* itemPath, const char* imgPath, const char* changeLogText) {
+BS_API(void) UpdateItem(const char* publishedFileID, const char* newTitle, const char* newDesc, const char* itemPath, const char* imgPath, const char* changeLogText, bool shouldUpdateTags) {
 	currentUpdateTitle = newTitle;
 	currentUpdateDesc = newDesc;
 	currentUpdatePath = filesystem::absolute(itemPath).string();
@@ -46,7 +69,7 @@ BS_API(void) UpdateItem(const char* publishedFileID, const char* newTitle, const
 	publishedFileId = atoll(publishedFileID);
 	changelog = changeLogText;
 	isCreating = false;
-	UpdateItemInternal();
+	UpdateItemInternal(shouldUpdateTags);
 }
 
 BS_API(int) QueryUpdateItemStatus() {

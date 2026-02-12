@@ -219,6 +219,10 @@ BS_API(int) CloseConnection(int upperID, int lowerID) {
 	return SteamNetworking()->CloseP2PSessionWithUser(idMerge(upperID, lowerID));
 }
 
+BS_API(void) OpenOnScreenKeyboard(int mode, int x, int y, int width, int height) {
+	SteamUtils()->ShowFloatingGamepadTextInput(static_cast<EFloatingGamepadTextInputMode>(mode), x, y, width, height);
+}
+
 BS_API(const char*) EE(const char* cid) {
 	P2PSessionState_t p2pSessionState;
 	if (SteamNetworking()->GetP2PSessionState((uint64) std::atoll(cid), &p2pSessionState)) {

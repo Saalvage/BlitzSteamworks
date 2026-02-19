@@ -51,6 +51,9 @@ BS_API(int) Achieve(const char* apiName);
 BS_API(int) UnAchieve(const char* apiName);
 
 
+BS_API(const char*) GetGameLanguage();
+
+
 // Returns if the overlay is currently open
 // 0 if it is closed
 // 1 if it is open

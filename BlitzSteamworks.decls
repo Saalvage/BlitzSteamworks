@@ -8,6 +8,8 @@ Steam_Shutdown():"_Shutdown@0"
 Steam_Achieve%(ID$):"_Achieve@4"
 Steam_UnAchieve%(ID$):"_UnAchieve@4"
 
+Steam_GetGameLanguage$():"_GetGameLanguage@0"
+
 Steam_GetOverlayState%():"_GetOverlayState@0"
 Steam_GetOverlayUpdated%():"_GetOverlayUpdated@0"
 

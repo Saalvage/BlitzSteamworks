@@ -53,6 +53,10 @@ BS_API(int) UnAchieve(const char* apiName) {
 	return b == 1 ? b : 3;
 }
 
+BS_API(const char*) GetGameLanguage() {
+	return SteamApps()->GetCurrentGameLanguage();
+}
+
 
 int overlayState = 0;
 int overlayStatePrev = 0;

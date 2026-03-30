@@ -74,6 +74,11 @@ BS_API(int) GetOverlayUpdated() {
 }
 
 
+BS_API(int) SetRichPresence(const char* key, const char* value) {
+	return SteamFriends()->SetRichPresence(key, value);
+}
+
+
 int idUpper(uint64 cid) {
 	return cid >> 32;
 }

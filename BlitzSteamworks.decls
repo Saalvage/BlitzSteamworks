@@ -13,6 +13,8 @@ Steam_GetGameLanguage$():"_GetGameLanguage@0"
 Steam_GetOverlayState%():"_GetOverlayState@0"
 Steam_GetOverlayUpdated%():"_GetOverlayUpdated@0"
 
+Steam_SetRichPresence%(key$, value$):"_SetRichPresence@8"
+
 Steam_PublishItem(name$, desc$, path$, imgPath$):"_PublishItem@16"
 Steam_UpdateItem(fileid$, name$, desc$, path$, imgPath$, changelog$, updateTags%):"_UpdateItem@28"
 Steam_QueryUpdateItemStatus%():"_QueryUpdateItemStatus@0"

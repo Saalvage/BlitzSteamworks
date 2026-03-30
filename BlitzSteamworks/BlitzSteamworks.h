@@ -67,6 +67,9 @@ BS_API(int) GetOverlayState();
 BS_API(int) GetOverlayUpdated();
 
 
+BS_API(int) SetRichPresence(const char* key, const char* value);
+
+
 BS_API(void) ClearItemTags();
 BS_API(void) AddItemTag(const char* tag);
 BS_API(void) RemoveItemTag(const char* tag);
